@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 import UserRoutes from "./routes/users";
 import LoginRoutes from "./routes/login";
+import { CONFIG } from "./config";
 
 class Server {
   app: express.Application;
@@ -15,16 +16,15 @@ class Server {
 
   config() {
     // Mongoose
-    const MONGO_URI = "mongodb://localhost:27017/technical_test_api";
     mongoose
-      .connect(process.env.MONGODB_URL || MONGO_URI, {
+      .connect(CONFIG.MONGODB_URL, {
         autoIndex: true,
         autoCreate: true,
       })
       .then(() => console.log("DB is connected"));
 
     // Port
-    this.app.set("port", process.env.PORT || 3001);
+    this.app.set("port", CONFIG.PORT);
 
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: false }));
